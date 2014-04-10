@@ -1,10 +1,13 @@
 #!/bin/bash
-# Pick a good zone for your local, note the trailing space
-ZONE=pool.ntp.org
-#ZONE=us.pool.ntp.org
+# You might want to adjust these.
+ZONE=America/New_York
+POOL=pool.ntp.org
+
+trap 'echo "leaving install ntp"' EXIT
+set -o nounset -o errexit -o verbose
 opkg update
 opkg install ntp
-rm /etc/localtime ;  ln -s /usr/share/zoneinfo/America/New_York 
+rm -f /etc/localtime ;  ln -s /usr/share/zoneinfo/$ZONE /etc/localtime
 ntpdate -b -s -u pool.ntp.org
 systemctl enable ntpdate.service
 systemctl enable ntpd.service
@@ -16,10 +19,10 @@ driftfile /etc/ntp.drift
 # This obtains a random server which will be close
 # (in IP terms) to the machine.  Add other servers
 # as required, or change this.
-server 0.${ZONE}
-server 1.${ZONE}
-server 2.${ZONE}
-server 3.${ZONE}
+server 0.${POOL}
+server 1.${POOL}
+server 2.${POOL}
+server 3.${POOL}
 # Using local hardware clock as fallback
 # Disable this when using ntpd -q -g -x as ntpdate or it will sync to itself
 #server 127.127.1.0
@@ -27,5 +30,3 @@ server 3.${ZONE}
 # Defining a default security setting
 restrict 192.168.1.0 mask 255.255.255.0 nomodify notrap
 EOF
-systemctl enable ntpdate.service
-systemctl enable ntpd.service
