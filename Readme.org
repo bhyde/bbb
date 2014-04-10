@@ -1,0 +1,68 @@
+* Intro
+The scripts found here are intended to be run on a BeagleBone Black.
+
+They are untested, so feedback is welcome
+
+They are based on my experiences doing this by hand.
+
+** Power and Network
+Before using these:
++ Plug an Ethernet cable from the board into your LAN.  Assuming
+  your lan has DHCP the board will grab an IP.
++ Plug a micro USB cable into the board (below the
+  internet connector), and into some USB power source.
+  This will power up the board.
+
+Then puzzle out what the <ip> is.  My LAN's router has a web UI which
+will enumerate all connected devices.  The beagle board identifies
+it's self.
+
+** Setup SSH
+Us ssh to connect to the board: ssh root@<ip>, the password is '',
+i.e. it's blank.  Create a .ssh/authorized_keys file on that board
+and place your usual ssh public key there.
+
+On you laptop add this to ~/.ssh/config
+#+begin_src
+host bbb
+     hostname <ip-addr>
+     user root
+#+end_src
+
+A this point you ought to be able to do: ssh bbb
+
+** NTP - time
+This section is based on [[http://derekmolloy.ie/automatically-setting-the-beaglebone-black-time-using-ntp/][this post]]!
+
+You really need to do this, otherwise make doesn't work  Run the
+install-ntp script so your board will set it's time when it boots.
+If you don't do this the make won't work.
+
+This will also bootstrap the package system, aka opkg.
+** Emacs - an editor
+The install-emacs script does just that, it will take about an hour.
+The version of emacs built is somewhat stripped down, but it still
+has X windows.
+
+You can, of course, run emacs on your laptop and use tramp and ssh to
+edit files etc.  Further slime-connect is your friend.
+** ccl - a lisp
+This section is based on [[http://www.raspihub.com/go/f5780dbf11dabc60771e67b357ae947bc6b3fd87f35d5f38e7d511ff88e08d0c][this post]]!
+
+Before using this script you need to help it a bit.  It is a PIA to
+install subversion on the board, so don't.  Grab the ccl distribution
+on your laptop and then copy it over.
+#+begin_src
+  svn co http://svn.clozure.com/publicsvn/openmcl/trunk/linuxarm/ccl
+  ssh bbb mkdir -p /usr/local/src
+  scp -rp ccl bbb:/usr/local/src/ccl
+  rm -rf ccl
+#+end_src
+Then run install-ccl.  It takes about 30 minutes.  It will:
++ recompile the ccl kernel for the ARM processor on the board, and
++ it will then rebuild the lisp side of things.
++ Into /usr/local/bin it installs armcl, and an alias lisp 
++ Then it installs quicklisp, the slime helper, and modifies root's
+  .emacs.d/init.el
+When that's all done you should be able to do M-x slime in the emacs
+you build earlier.

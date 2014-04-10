@@ -1,0 +1,51 @@
+#!/bin/bash
+if [ ! -d /usr/local/src/ccl ] ; then
+cat <<EOF
+Because it's a PIA to get subversion running ont
+the beaglebone you should grab a copy of ccl on
+your laptop and then copy it over.  For example:
+  svn co http://svn.clozure.com/publicsvn/openmcl/trunk/linuxarm/ccl
+  ssh bbb mkdir -p /usr/local/src
+  scp -rp ccl bbb:/usr/local/src/ccl
+  rm -rf ccl
+EOF
+ exit 1
+fi
+cd /usr/local/src/ccl
+log "Found the sources in $(pwd)"
+log "Put the executable on the path, /usr/local/bin"
+log "   armcl, and lisp"
+ln -s $(pwd)/armcl /usr/local/bin/armcl
+ln -s /usr/local/bin/armcl /usr/local/bin/lisp
+
+log "Rebuild it from scratch."
+log " ... via make"
+cd /usr/local/src/ccl/lisp-kernel/linuxarm/
+make clean
+make
+log "  ... via ccl:rebuild-ccl"
+armcl <<EOF
+(ccl:rebuild-ccl :full t)
+(quit)
+EOF
+log " ... setup quicklisp"
+wget http://beta.quicklisp.org/quicklisp.lisp > /tmp/quicklisp.lisp
+armcl <<EOF
+(load "/tmp/quicklisp.lisp")
+(funcall (read "quicklisp-quickstart:install"))
+(quit)
+EOF
+rm /tmp/quicklisp.lisp
+cat <<EOF > ~/.ccl-init.lisp
+(let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
+                                         (user-homedir-pathname))))
+    (when (probe-file quicklisp-init)
+      (load quicklisp-init)))
+EOF
+armcl <<EOF
+(ql:quickload "quicklisp-slime-helper")
+(quit)
+EOF
+cat <<EOF >> ~/.emacs.d/init.el
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
+EOF

@@ -1,0 +1,11 @@
+#!/bin/bash
+cd /tmp
+wget http://ftp.gnu.org/gnu/emacs/emacs-24.3.tar.gz
+tar zxf emacs-24.3.tar.gz
+rm emacs-24.3.tar.gz
+cd emacs-24.3
+./configure --without-all
+make
+make install
+cd /tmp
+rm -rf /tmp/emacs-24.3
