@@ -5,6 +5,15 @@ They are untested, so feedback is welcome
 
 They are based on my experiences doing this by hand.
 
+** Note about SVN and Git
+
+The linux on the board is Angstrom and it's package manager is opkg.
+
+Neither git nor subversion are in working order.  So you'll need
+to do your source control on another computer.  Or if your more
+ambitious that I am, so far, you'll have to build those from scratch
+or install a different OS.  Once you have ssh setup it's pretty
+easy to move things back and forth.
 ** Power and Network
 Before using these:
 + Plug an Ethernet cable from the board into your LAN.  Assuming
