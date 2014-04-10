@@ -1,4 +1,6 @@
 #!/bin/bash
+trap 'echo "leaving install ccl"' EXIT
+set -o nounset -o errexit -o verbose
 if [ ! -d /usr/local/src/ccl ] ; then
 cat <<EOF
 Because it's a PIA to get subversion running ont
@@ -11,11 +13,16 @@ your laptop and then copy it over.  For example:
 EOF
  exit 1
 fi
+log(){ echo "LOG: $*" ; }
 cd /usr/local/src/ccl
 log "Found the sources in $(pwd)"
+log " ... Discard the svn info, doc, tools, contrib, objc, tools, other platform stuff"
+rm -rf $( find . -name .svn )
+rm -rf doc tools level-0/{PPC,X86} contrib objc-bridge tools
 log "Put the executable on the path, /usr/local/bin"
 log "   armcl, and lisp"
-ln -s $(pwd)/armcl /usr/local/bin/armcl
+rm -f /usr/local/bin/armcl /usr/local/bin/lisp
+ln -s $(pwd)/scripts/ccl /usr/local/bin/armcl
 ln -s /usr/local/bin/armcl /usr/local/bin/lisp
 
 log "Rebuild it from scratch."
@@ -46,6 +53,7 @@ armcl <<EOF
 (ql:quickload "quicklisp-slime-helper")
 (quit)
 EOF
+mkdir -p ~/.emacs.d
 cat <<EOF >> ~/.emacs.d/init.el
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 EOF
