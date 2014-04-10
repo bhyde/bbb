@@ -5,6 +5,14 @@ They are untested, so feedback is welcome
 
 They are based on my experiences doing this by hand.
 
+What's here so far...
++ A warning about how lame the svn & git support is.
++ How to power and hook up the network, since I use it headless
++ Configuring your ssh
++ Getting time to work via ntp.
++ Installing: emacs (an editor).
++ Installing: ccl (a common lisp).
+
 ** Note about SVN and Git
 
 The linux on the board is Angstrom and it's package manager is opkg.
