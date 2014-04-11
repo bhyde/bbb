@@ -56,10 +56,15 @@ install-ntp script so your board will set it's time when it boots.
 If you don't do this the make won't work.
 
 This will also bootstrap the package system, aka opkg.
+** tmux
+The script install-tmux presumably does that, but I've not tested it yet.
 ** Emacs - an editor
 The install-emacs script does just that, it will take more than an
-hour.  You don't need emacs, you can use tramp and slime-connect
-instead.
+hour.  You may prefer to run this inside of tmux.  You don't need
+emacs, you can use tramp and slime-connect instead.
+
+This script has worked at least once, but the last time I tried it
+it failed.  Life is full of mystery, eh?
 
 The version of emacs built is somewhat stripped down, but it still
 has X windows.
@@ -83,3 +88,9 @@ Then run install-ccl.  It takes about 30 minutes.  It will:
   .emacs.d/init.el
 When that's all done you should be able to do M-x slime in the emacs
 you build earlier.
+
+* Some Useful Links
++ [[http://derekmolloy.ie/automatically-setting-the-beaglebone-black-time-using-ntp/][Installing ntp]]
++ [[http://www.raspihub.com/go/f5780dbf11dabc60771e67b357ae947bc6b3fd87f35d5f38e7d511ff88e08d0c][Installing ccl]]
++ [[http://www.gigamegablog.com/2012/01/29/beaglebone-linux-101-configuring-angstrom-linux/][A lot of useful little recipes]] new user, sudo install, etc. etc.
++ [[http://blog.outten.net/article/2013-02-02-beaglebone-setup][More recipes]]
