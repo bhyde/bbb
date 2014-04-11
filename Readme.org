@@ -1,16 +1,16 @@
 * Intro
 The scripts found here are intended to be run on a BeagleBone Black.
 
-They are untested, so feedback is welcome
-
-They are based on my experiences doing this by hand.
+Feedback is welcome.  The scripts worked for me, except the emacs
+script.  At least once.  You may want to run them under bash -v so
+when they hickup you can see the transcript.
 
 What's here so far...
 + A warning about how lame the svn & git support is.
 + How to power and hook up the network, since I use it headless
 + Configuring your ssh
 + Getting time to work via ntp.
-+ Installing: emacs (an editor).
++ Installing: emacs (an editor). This is very slow.
 + Installing: ccl (a common lisp).
 
 ** Note about SVN and Git
@@ -57,12 +57,12 @@ If you don't do this the make won't work.
 
 This will also bootstrap the package system, aka opkg.
 ** Emacs - an editor
-The install-emacs script does just that, it will take about an hour.
+The install-emacs script does just that, it will take more than an
+hour.  You don't need emacs, you can use tramp and slime-connect
+instead.
+
 The version of emacs built is somewhat stripped down, but it still
 has X windows.
-
-You can, of course, run emacs on your laptop and use tramp and ssh to
-edit files etc.  Further slime-connect is your friend.
 ** ccl - a lisp
 This section is based on [[http://www.raspihub.com/go/f5780dbf11dabc60771e67b357ae947bc6b3fd87f35d5f38e7d511ff88e08d0c][this post]]!
 
