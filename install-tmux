@@ -1,5 +1,5 @@
 #!/bin/bash
-trap 'echo "leaving install emacs"' EXIT
+trap 'echo "leaving install tmux"' EXIT
 set -o nounset -o errexit -o verbose
 cd /tmp
 
