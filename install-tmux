@@ -1,22 +1,5 @@
 #!/bin/bash
-trap 'echo "leaving install tmux"' EXIT
-set -o nounset -o errexit -o verbose
-cd /tmp
-
-function install_this(){
-  V=$2
-  U="$1/$V.tar.gz"
-  echo "LOG: installing $V"
-  curl --remote-name --location --insecure "$U"
-  tar xzf "$V.tar.gz"
-  rm "$V.tar.gz"
-  cd "$V"
-  ./configure
-  make install
-  cd ..
-  rm -rf "$V"
-}
-
-install_this https://github.com/downloads/libevent/libevent libevent-2.0.19-stable
-install_this http://downloads.sourceforge.net/tmux tmux-1.9a
-
+. "$(dirname $0)/utils.sh"
+run-safe
+install-this https://github.com/downloads/libevent/libevent libevent-2.0.19-stable
+install-this http://downloads.sourceforge.net/tmux tmux-1.9a

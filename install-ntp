@@ -1,14 +1,20 @@
 #!/bin/bash
+. "$(dirname $0)/utils.sh"
+run-safe
+
 # You might want to adjust these.
 ZONE=America/New_York
 POOL=pool.ntp.org
 
-trap 'echo "leaving install ntp"' EXIT
-set -o nounset -o errexit -o verbose
+LOG Installing ntp using $POOL for $ZONE
 opkg update
 opkg install ntp
 rm -f /etc/localtime ;  ln -s /usr/share/zoneinfo/$ZONE /etc/localtime
+LOG Set the time
 ntpdate -b -s -u pool.ntp.org
+LOG "$( date )"
+
+LOG Configure the ntp deamons
 cat <<EOF > /etc/ntp.conf
 # This is the most basic ntp configuration file
 # The driftfile must remain in a place specific to this
@@ -28,5 +34,7 @@ server 3.${POOL}
 # Defining a default security setting
 restrict 192.168.1.0 mask 255.255.255.0 nomodify notrap
 EOF
+
+LOG Start the ntp deamons
 systemctl enable ntpdate.service
 systemctl enable ntpd.service

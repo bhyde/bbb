@@ -1,41 +1,37 @@
 #!/bin/bash
-trap 'echo "leaving install ccl"' EXIT
-set -o nounset -o errexit -o verbose
-if [ ! -d /usr/local/src/ccl ] ; then
-cat <<EOF
-Because it's a PIA to get subversion running ont
-the beaglebone you should grab a copy of ccl on
-your laptop and then copy it over.  For example:
-  svn co http://svn.clozure.com/publicsvn/openmcl/trunk/linuxarm/ccl
-  ssh bbb mkdir -p /usr/local/src
-  scp -rp ccl bbb:/usr/local/src/ccl
-  rm -rf ccl
-EOF
- exit 1
-fi
-log(){ echo "LOG: $*" ; }
-cd /usr/local/src/ccl
-log "Found the sources in $(pwd)"
-log " ... Discard the svn info, doc, tools, contrib, objc, tools, other platform stuff"
+. "$(dirname $0)/utils.sh"
+run-safe
+assure-extra-opkg-repo
+if ! which svn ; then opkg svn ; fi
+
+LOG "Get ccl from it's svn"
+mkdir -p /usr/local/src
+cd /usr/local/src
+svn co http://svn.clozure.com/publicsvn/openmcl/trunk/linuxarm/ccl
+cd ccl
+
+LOG " ... Discard the svn info, doc, tools, contrib, objc, tools, other platform stuff"
 rm -rf $( find . -name .svn )
 rm -rf doc tools level-0/{PPC,X86} contrib objc-bridge tools
-log "Put the executable on the path, /usr/local/bin"
-log "   armcl, and lisp"
+
+LOG "Put the executable on the path, /usr/local/bin"
+LOG "   as both armcl, and lisp"
 rm -f /usr/local/bin/armcl /usr/local/bin/lisp
 ln -s $(pwd)/scripts/ccl /usr/local/bin/armcl
 ln -s /usr/local/bin/armcl /usr/local/bin/lisp
 
-log "Rebuild it from scratch."
-log " ... via make"
+LOG "Rebuild it from scratch."
+LOG " ... via make"
 cd /usr/local/src/ccl/lisp-kernel/linuxarm/
 make clean
 make
-log "  ... via ccl:rebuild-ccl"
+LOG "  ... via ccl:rebuild-ccl"
 armcl <<EOF
 (ccl:rebuild-ccl :full t)
 (quit)
 EOF
-log " ... setup quicklisp"
+
+LOG "Setup quicklisp"
 wget http://beta.quicklisp.org/quicklisp.lisp > /tmp/quicklisp.lisp
 armcl <<EOF
 (load "/tmp/quicklisp.lisp")
@@ -49,7 +45,7 @@ cat <<EOF > ~/.ccl-init.lisp
     (when (probe-file quicklisp-init)
       (load quicklisp-init)))
 EOF
-armcl <<EOF
+lisp <<EOF
 (ql:quickload "quicklisp-slime-helper")
 (quit)
 EOF

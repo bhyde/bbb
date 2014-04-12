@@ -1,15 +1,14 @@
 #!/bin/bash
-trap 'echo "leaving install emacs"' EXIT
-set -o nounset -o errexit -o verbose
-# FYI: /tmp is not large enough for the build.
-WORK=/home/root
-cd "$WORK"
-wget http://ftp.gnu.org/gnu/emacs/emacs-24.3.tar.gz
-tar zxf emacs-24.3.tar.gz
-rm emacs-24.3.tar.gz
-cd emacs-24.3
-./configure --without-all
-make
-make install
-cd "$WORK"
-rm -rf emacs-24.3
+. "$(dirname $0)/utils.sh"
+run-safe
+if ! which emacs > /dev/null ; then exit 0 ; fi
+assure-extra-opkg-repo
+opkg install emacs
+exit 0
+
+
+#### It is possible to build it from scratch
+### FYI: /tmp is not large enough for the build.
+#cd /home/root
+#install-this http://ftp.gnu.org/gnu/emacs/ emacs-24.3
+
