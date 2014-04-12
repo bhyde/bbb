@@ -1,7 +1,9 @@
 #!/bin/bash
 trap 'echo "leaving install emacs"' EXIT
 set -o nounset -o errexit -o verbose
-cd /tmp
+# FYI: /tmp is not large enough for the build.
+WORK=/home/root
+cd "$WORK"
 wget http://ftp.gnu.org/gnu/emacs/emacs-24.3.tar.gz
 tar zxf emacs-24.3.tar.gz
 rm emacs-24.3.tar.gz
@@ -9,5 +11,5 @@ cd emacs-24.3
 ./configure --without-all
 make
 make install
-cd /tmp
-rm -rf /tmp/emacs-24.3
+cd "$WORK"
+rm -rf emacs-24.3
