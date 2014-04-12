@@ -1,15 +1,16 @@
 * Intro
 The scripts found here are intended to be run on a BeagleBone Black.
 
-Feedback is welcome.  The scripts worked for me, except the emacs
-script.  At least once.  You may want to run them under bash -v so
-when they hickup you can see the transcript.
+Feedback is welcome.  The scripts worked for me. At least once.  You
+may want to run them under bash -v so when they hickup you can see the
+transcript.
 
 What's here so far...
 + A warning about how lame the svn & git support is.
 + How to power and hook up the network, since I use it headless
 + Configuring your ssh
 + Getting time to work via ntp.
++ Installing: tmux, so you can disconnect and leave things running.
 + Installing: emacs (an editor). This is very slow.
 + Installing: ccl (a common lisp).
 
@@ -33,6 +34,10 @@ Before using these:
 Then puzzle out what the <ip> is.  My LAN's router has a web UI which
 will enumerate all connected devices.  The beagle board identifies
 it's self.
+
+Aside: The doc suggets that you can use the USB cable for networking.
+but I wasn't able to get that to happen for me.  At least not on my
+Mac.
 
 ** Setup SSH
 Us ssh to connect to the board: ssh root@<ip>, the password is '',
@@ -59,15 +64,16 @@ This will also bootstrap the package system, aka opkg.
 ** tmux
 The script install-tmux presumably does that, but I've not tested it yet.
 ** Emacs - an editor
-The install-emacs script does just that, it will take more than an
-hour.  You may prefer to run this inside of tmux.  You don't need
-emacs, you can use tramp and slime-connect instead.
+The install-emacs script does just that, it will take around two
+hours.  You may prefer to run this inside of tmux.  
 
-This script has worked at least once, but the last time I tried it
-it failed.  Life is full of mystery, eh?
+You don't need emacs, you can use tramp and slime-connect instead.
 
-The version of emacs built is somewhat stripped down, but it still
-has X windows.
+This script has worked at least once, but beware that it needs a lot
+of disk space.
+
+The version of emacs built is somewhat stripped down (i.e. --without-all),
+but it still has X windows.
 ** ccl - a lisp
 This section is based on [[http://www.raspihub.com/go/f5780dbf11dabc60771e67b357ae947bc6b3fd87f35d5f38e7d511ff88e08d0c][this post]]!
 
