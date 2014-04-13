@@ -2,7 +2,7 @@
 . "$(dirname $0)/utils.sh"
 run-safe
 assure-extra-opkg-repo
-if ! which svn ; then opkg svn ; fi
+if ! which svn > /dev/null ; then opkg install subversion ; fi
 
 LOG "Get ccl from it's svn"
 mkdir -p /usr/local/src
@@ -10,9 +10,9 @@ cd /usr/local/src
 svn co http://svn.clozure.com/publicsvn/openmcl/trunk/linuxarm/ccl
 cd ccl
 
-LOG " ... Discard the svn info, doc, tools, contrib, objc, tools, other platform stuff"
+LOG " ... Discard the svn info, doc, contrib, objc, and some other platforms' stuff"
 rm -rf $( find . -name .svn )
-rm -rf doc tools level-0/{PPC,X86} contrib objc-bridge tools
+rm -rf doc level-0/{PPC,X86} contrib objc-bridge
 
 LOG "Put the executable on the path, /usr/local/bin"
 LOG "   as both armcl, and lisp"
