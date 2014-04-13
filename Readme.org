@@ -5,13 +5,10 @@ Feedback is welcome.
 
 The scripts worked for me, at least once.  But then I rewrote them.
 
-I run them via 'bash -v' so I can see where they go wrong.
-
 What's here so far...
-+ A warning about how lame the svn & git support is.
 + How to power and hook up the network, since I use it headless
-+ Configuring your ssh
-+ Getting time to work via ntp.
++ Suggestions on configuring your ssh
++ Installing: ntp (i.e. network time)
 + Installing: tmux, so you can disconnect and leave things running.
 + Installing: emacs (an editor). This is very slow.
 + Installing: ccl (a common lisp).
@@ -19,7 +16,7 @@ What's here so far...
 The git installed will not work with github.  I haven't addressed that
 issue yet.  So, rather than clone these tools, get them as so:
 #+begin_src
-curl --location --insecure https://github.com/bhyde/bbb/archive/master.zip | unzip
+curl --location --insecure https://github.com/bhyde/bbb/archive/master.zip | unzip -
 cd bbb-master
 #+end_src
 
@@ -66,7 +63,7 @@ host bbb
 #+end_src
 
 A this point you ought to be able to do: ssh bbb
-* Install scripts
+* The Install scripts
 ** install-ntp, the network time daemon
 This section is based on [[http://derekmolloy.ie/automatically-setting-the-beaglebone-black-time-using-ntp/][this post]]!
 
@@ -95,9 +92,4 @@ you build earlier.
 + [[http://www.raspihub.com/go/f5780dbf11dabc60771e67b357ae947bc6b3fd87f35d5f38e7d511ff88e08d0c][Installing ccl]]
 + [[http://www.gigamegablog.com/2012/01/29/beaglebone-linux-101-configuring-angstrom-linux/][A lot of useful little recipes]] new user, sudo install, etc. etc.
 + [[http://blog.outten.net/article/2013-02-02-beaglebone-setup][More recipes]]
-+ [[http://austinblackstoneengineering.com/beaglebone-black-setup-the-lost-packages/][Another blog post]] with the clue about another opkg repo, [[http://feeds.angstrom-distribution.org/feeds/unstable/ipk/glibc/armv7a/base][thia]] appears to be a useful!
-#+begin_src
-echo ‘src/gz angstrom-base http://feeds.angstrom-distribution.org/feeds/unstable/ipk/glibc/armv7a/base’ > /etc/opkg/angstrom-base.conf
-#+end_src
-This looks like it can avoids the need to compile emacs, would
-provide subversion we don't need to work around that.
++ [[http://austinblackstoneengineering.com/beaglebone-black-setup-the-lost-packages/][Another blog post]] where in I found the better opkg repository.
