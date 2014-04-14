@@ -14,7 +14,7 @@ fi
 opkg install python python-pyserial python-distutils
 opkg remove git
 curl --output /usr/lib/python2.7/py_compile.py \
-     https://raw.github.com/pypy/pypy/master/lib-python/2.7/py_compile.py
+     http://hg.python.org/cpython/raw-file/4ebe1ede981e/Lib/py_compile.py
 install-this \
       https://www.kernel.org/pub/software/scm/git git-1.8.3 \
      '--without-tcltk' \
