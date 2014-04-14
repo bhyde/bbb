@@ -24,14 +24,15 @@ Then you can run the scripts one as time.
 #+begin_src
 bash -v install-ntp
 bash -v install-tmux
+bash -v install-git
 bash -v install-emacs
 bash -v install-ccl
 #+end_src
+The git install takes a while.
 
 The linux on the board is Angstrom and it's package manager is opkg.
 The default repository is very lean, so utils.sh has a bash function
 to add a better one.  This is done prior to installing ccl or emacs.
-
 ** Power, Network, and SSH
 I use the board headless via ssh.
 
@@ -70,7 +71,19 @@ This section is based on [[http://derekmolloy.ie/automatically-setting-the-beagl
 You *really* need to do this, since otherwise make won't work.
 ** install-tmux
 tmux is a software terminal multiplexer, like screen, it's useful when
-you want to have a long running process.  Like building emacs from source.
+you want to have a long running process.  Like building emacs from
+source.
+** install-git
+The git found on the board is incompatible with
+github, so this script compiles one from scratch.
+
+This also helps with the board's confusion around
+certificate authorities.  For example it tells curl
+where to find these certs.
+
+It will copy default-gitconfig into ~root/.gitconfig,
+but you will have to adjust the user info in there.
+The config will also address the problem with certs.
 ** install-emacs - an editor
 This script pulls emacs from the added opkg repository.
 ** install-ccl - a lisp
