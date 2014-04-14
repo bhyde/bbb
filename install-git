@@ -1,0 +1,18 @@
+#!/bin/bash
+. "$(dirname $0)/utils.sh"
+run-safe
+
+# See:
+#  http://derekmolloy.ie/building-git-beaglebone/
+#  http://derekmolloy.ie/fixing-git-and-curl-certificates-problem-on-beaglebone-blac/
+
+opkg install ca-certificates
+if ! grep --silent CURL_CA_BUNDLE /etc/.profile ; then
+  echo 'export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt' >> /etc/profile
+fi
+opkg install python python-pyserial python-distutils
+opkg remove git
+install-this \
+      https://www.kernel.org/pub/software/scm/git git-1.8.3 \
+     '--without-tcltk' \
+     'NO_TCLTK=Yes NO_MSGFMT=Yes NO_GETTEXT=Yes'

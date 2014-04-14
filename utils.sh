@@ -25,8 +25,8 @@ function install-this(){
   tar xzf "$V.tar.gz"
   rm "$V.tar.gz"
   cd "$V"
-  ./configure
-  make install
+  ./configure $3
+  make $4 install
   cd ..
   rm -rf "$V"
 }
