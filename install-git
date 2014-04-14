@@ -9,10 +9,16 @@ run-safe
 opkg install ca-certificates
 if ! grep --silent CURL_CA_BUNDLE /etc/.profile ; then
   echo 'export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt' >> /etc/profile
+  export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 fi
 opkg install python python-pyserial python-distutils
 opkg remove git
+curl --output /usr/lib/python2.7/py_compile.py \
+     https://raw.github.com/pypy/pypy/master/lib-python/2.7/py_compile.py
 install-this \
       https://www.kernel.org/pub/software/scm/git git-1.8.3 \
      '--without-tcltk' \
      'NO_TCLTK=Yes NO_MSGFMT=Yes NO_GETTEXT=Yes'
+if [[ ! -f ~/.gitconfig ]] ; then
+  cp default-gitconfig ~/.gitconfig
+fi
